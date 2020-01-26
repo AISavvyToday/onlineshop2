@@ -4,7 +4,10 @@ from . models import Item
 # Create your views here.
 
 def home(request):
-	context=locals()
+
+	items = Item.objects.all()
+
+	context={'items': items }
 
 	return render(request, 'home.html', context)
 
