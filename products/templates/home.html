@@ -1,7 +1,7 @@
 
 {% extends 'base.html' %}
 
-
+{% load staticfiles %}
 {% block jumbotron2 %}
 <div class="container">
                  <div class="jumbotron">
@@ -22,16 +22,26 @@
   
 	
     {% for item in items %}
-      <div class='col-sm-3'>
-       {% for item in item.itemimage_set.all %}
-        {% if item.featured %}
-          <img src="{{ MEDIA_URL }}{{ item.image.url }}">
-        {% endif %}
-       {% endfor %}
-      {{ item.title }}
-      {{ item.price }}
-</div>
-    {% cycle "" "" "" "</div><br/><hr/><div class='row'>" %}
+          <div class="thumbnails">
+            {% if item.itemimage_set %}
+                  {% for item in item.itemimage_set.all %}
+                  <div class='col-sm-4'>  
+                      {% if item.featured %}
+                      <img class="img-responsive" src="{{ MEDIA_URL }}{{ item.image.url }}"/>
+                      {% endif %}
+                  {% endfor %}
+            {% else %}
+            <img class="img-responsive" src="{% static 'img/default.jpg' %}"/>
+            {% endif %}
+                <div class="caption">
+                  <a href="/items/{{ item.slug }}"><h3>{{ item.title }}</h3></a>
+                  <p>{{ item.description|truncatechars:500 }}</p>
+                  <p><a href="/items/{{ item.slug }}" class="btn btn-primary" role="button">View</a><a href="#" class="btn btn-default" role="button">Button</a></p>
+                </div>
+          </div>
+      
+  </div>
+    {% cycle "" "" "</div><br/><hr/><div class='row'>" %}
 
     {% endfor %}
   
