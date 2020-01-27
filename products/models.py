@@ -8,7 +8,7 @@ from django.db import models
 class Item(models.Model):
 	title = models.CharField(max_length=100)
 	description = models.TextField(null=True, blank=True)
-	price = models.FloatField()
+	price = models.DecimalField(max_digits=100, decimal_places=2, default=0.00)
 	sale_price = models.FloatField(null=True, blank=True)
 	created = models.DateTimeField(auto_now_add=True, auto_now=False)
 	updated = models.DateTimeField(auto_now_add=False, auto_now=True)

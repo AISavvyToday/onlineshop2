@@ -19,15 +19,17 @@ from django.conf.urls.static import static
 
 from django.contrib import admin
 from django.urls import path
-from products import views
-
+from products import views as product_views
+from carts import views as cart_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
-    path('s/', views.search, name='search'),
-    path('items/', views.all, name='items'),
-    path('items/<slug:slug>', views.single, name='single-item'),
+    path('', product_views.home, name='home'),
+    path('s/', product_views.search, name='search'),
+    path('items/', product_views.all, name='items'),
+    path('cart/', cart_views.ViewCart, name='cart'),
+    path('items/<slug:slug>', product_views.single, name='single-item'),
+
 
     #(?P<all_items>.*)
     #(?P<all_items>\d+)

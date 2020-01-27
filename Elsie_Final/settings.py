@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'products',
+    'carts'
 ]
 
 MIDDLEWARE = [
@@ -55,7 +56,9 @@ ROOT_URLCONF = 'Elsie_Final.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['C:/Users/hp/OneDrive/Desktop/DevProjects/Elsie_Final/templates/products',
+        'C:/Users/hp/OneDrive/Desktop/DevProjects/Elsie_Final/templates/carts' 
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
