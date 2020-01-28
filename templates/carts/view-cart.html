@@ -1,23 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="col-sm-8 col-sm-offset-2">
+{% if empty %}
+
+<h2 style='text-align:center;'>{{ empty_cart_message }}</h2>
+
+{% else %}
 
 <div class="col-sm-8 col-sm-offset-2">
  <table class="table">
 	 <thead>
 		<th>Item</th>
 		<th>Price</th>
+		<th></th>
 	 </thead>
 	 <tfoot>
 	 	<tr>
+	 		<td></td>
 	 		<td></td>
 	 		<td>Total: {{ cart.total }}</td>
 	    </tr>	
 	 </tfoot> 	
 	{% for item in cart.items.all %}
-	<tr><td>{{ item }}</td><td>{{ item.price }}</td></tr>
+	<tr><td>{{ item }}</td><td>{{ item.price }}</td><td><a href="{% url 'update-cart' item.slug %}">Remove</a></td></tr>
 	{% endfor %}
  </table>
-</div>
 
+{% endif %}
+</div>
 {% endblock %}
+

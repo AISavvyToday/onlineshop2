@@ -12,6 +12,9 @@ class Cart(models.Model):
 	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 	active = models.BooleanField(default=True)
 
+	class Meta:
+		get_latest_by = "updated"
+
 
 	def __unicode__(self):
 		return "Card Id: %s" %(self.id)
