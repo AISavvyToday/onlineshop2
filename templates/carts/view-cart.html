@@ -23,8 +23,8 @@
 	 		<td>Total: {{ cart.total }}</td>
 	    </tr>	
 	 </tfoot> 	
-	{% for item in cart.ordered_items.all %}
-	<tr><td>{{ item.item }}</td><td>{{ item.item.price }}</td><td>{{ item.quantity }}</td><td><a href="{% url 'update-cart' item.item.slug %}">Remove</a></td></tr>
+	{% for item in cart.cartitem_set.all %}
+	<tr><td>{{ item.item }}</td><td>{{ item.item.price }}</td><td>{{ item.quantity }}</td><td><a href="{% url 'update-cart' item.item.slug 0 %}">Remove</a></td></tr>
 	{% endfor %}
  </table>
 

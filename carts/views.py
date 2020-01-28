@@ -23,7 +23,7 @@ def ViewCart(request):
 
 
 
-def UpdateCart(request, slug):
+def UpdateCart(request, slug, Qty):
 	request.session.set_expiry(600)
 	try:
 		the_id = request.session['cart_id']
@@ -41,18 +41,23 @@ def UpdateCart(request, slug):
 	except:
 		pass
 
-	cart_item, created = CartItem.objects.get_or_create(item=item)
+	cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item)
 	if created:
 		print('yeah')
-	if not cart_item in cart.ordered_items.all():
-		cart.ordered_items.add(cart_item)
+	if int(Qty) == 0:
+		cart_item.delete()
 	else:
-		cart.ordered_items.remove(cart_item)
+		cart_item.quantity = Qty
+		cart_item.save()
+	# if not cart_item in cart.ordered_items.all():
+	# 	cart.ordered_items.add(cart_item)
+	# else:
+	# 	cart.ordered_items.remove(cart_item)
 	new_total = 0.00
-	for i in cart.ordered_items.all():
+	for i in cart.cartitem_set.all():
 		item_line_total = float(i.item.price) * i.quantity
 		new_total += item_line_total
-	request.session['total_items'] = cart.ordered_items.count()
+	request.session['total_items'] = cart.cartitem_set.count()
 	cart.total = new_total
 	cart.save()
 

@@ -5,9 +5,11 @@ from products.models import Item
 
 class CartItem(models.Model):
 	# cart foreign key
+	cart = models.ForeignKey('Cart', null=True, blank=True, on_delete=models.CASCADE)
 	item = models.ForeignKey(Item, on_delete=models.CASCADE)
 	quantity = models.IntegerField(default=1)
 	#line total
+	line_total = models.DecimalField(default=0.00,max_digits=1000, decimal_places=2)
 	created = models.DateTimeField(auto_now_add=True, auto_now=False)
 	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
@@ -16,8 +18,6 @@ class CartItem(models.Model):
 
 
 class Cart(models.Model):
-	ordered_items = models.ManyToManyField(CartItem, null=True, blank=True)
-	items = models.ManyToManyField(Item, null=True, blank=True)
 	total = models.DecimalField(max_digits=100, decimal_places=2, default=0.00)
 	created = models.DateTimeField(auto_now_add=True, auto_now=False)
 	updated = models.DateTimeField(auto_now_add=False, auto_now=True)

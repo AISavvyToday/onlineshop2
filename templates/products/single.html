@@ -28,7 +28,7 @@
 		    {% endfor %}
 		  </div>
 		  <div class="col-sm-8">
-             <h1>{{ item.title }} <a href="{% url 'update-cart' item.slug %}" class="pull-right">Add to cart</a></h1>
+             <h1>{{ item.title }} <a href="{% url 'update-cart' item.slug 0 %}" class="pull-right">Add to cart</a></h1>
              <hr/>
              Price: ${{ item.price }}
              <hr/>
