@@ -16,7 +16,7 @@ class Item(models.Model):
 	active = models.BooleanField(default=True)
 
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.title
 
 
@@ -42,5 +42,5 @@ class ItemImage(models.Model):
 
 
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.item.title
