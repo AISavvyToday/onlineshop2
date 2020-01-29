@@ -28,20 +28,48 @@
 		    {% endfor %}
 		  </div>
 		  <div class="col-sm-8">
-             <h1>{{ item.title }}
-             	<a href="{% url 'update-cart' item.slug %}?Qty=10" class="pull-right">Add to cart</a></h1>
-             	<form class="form pull-right" method="GET" action="{% url 'update-cart' item.slug %}">
-             		<input type="number" name="Qty" value="1" />
-             		<input type="text" name="attr" value="" placeholder="color" />
-             		<input type="submit" value="Add to Cart"/>
-             	</form>
-             <hr/>
-             Price: ${{ item.price }}
-             <hr/>
-             Shipping: Free with purchase above $100
-             <hr/>
-             {{ item.description|linebreaks }}
+		    <div class="col-sm-8 pull-left">
+            	<h1>{{ item.title }}
+             	<!-- <a href="{% url 'update-cart' item.slug %}?Qty=10" class="pull-right">Add to cart</a> -->
+             		
+            	</h1>
+        	</div>
+        		<div class="col-sm-4 pull-right">
+	             	<form class="form pull-right" method="GET" action="{% url 'update-cart' item.slug %}">
+	             		<input class="btn btn-default btn-block" type="submit" value="Add to Cart"/>
+	             		<input class="form-control" type="number" name="Qty" value="1"/>
+	             
+	             	{% if item.variation_set.all %}
 
-		  </div>	
+	             		{% if item.variation_set.sizes %}
+		             		<select class="form-control" name="size">
+		             			{% for item in item.variation_set.sizes %}
+		             				<option value="{{ item.title|lower }}">{{ item.title|capfirst }}</option>
+		             			{% endfor %}
+		             		</select>
+	             		{% endif %}
+
+		             	{% if item.variation_set.colors %}
+		             		<select class="form-control" name="color">
+		             			{% for item in item.variation_set.colors %}
+		             				<option value="{{ item.title|lower }}">{{ item.title|capfirst }}</option>
+		             			{% endfor %}	
+		             		</select>
+	             		{% endif %}
+
+	             	{% endif %}   		
+	             	</form>
+             	</div>
+             <div class="col-sm-12"></div>
+	             <hr/>
+	             Price: ${{ item.price }}<br/>
+	             Shipping: Free with purchase above $100
+	             <hr/>
+             </div>
+	             <div class="col-sm-12">
+	             	{{ item.description|linebreaks }}
+	             </div>
+
+		    </div>	
 </div>
 {% endblock %}

@@ -4,11 +4,11 @@ from products.models import Item
 # Create your models here.
 
 class CartItem(models.Model):
-	# cart foreign key
+	
 	cart = models.ForeignKey('Cart', null=True, blank=True, on_delete=models.CASCADE)
 	item = models.ForeignKey(Item, on_delete=models.CASCADE)
 	quantity = models.IntegerField(default=1)
-	#line total
+	notes = models.TextField(null=True, blank=True)
 	line_total = models.DecimalField(default=0.00,max_digits=1000, decimal_places=2)
 	created = models.DateTimeField(auto_now_add=True, auto_now=False)
 	updated = models.DateTimeField(auto_now_add=False, auto_now=True)

@@ -31,11 +31,18 @@ def UpdateCart(request, slug):
 	except:
 		Qty = None
 		update_Qty = False
+	notes = {}
 	try:
-	   attr = request.GET.get('attr')
+	   size = request.GET.get('size')
+	   notes['size'] = size
 	except:
-		attr = None
-	print(attr)
+		size = None
+	try:
+		color = request.GET.get('color')
+		notes['color'] = color	
+	except:
+		color = None
+
 	try:
 		the_id = request.session['cart_id']
 	except:
@@ -56,10 +63,11 @@ def UpdateCart(request, slug):
 	if created:
 		print('yeah')
 	if update_Qty and Qty:
-		if int(Qty) == 0:
+		if int(Qty) <= 0:
 			cart_item.delete()
 		else:
 			cart_item.quantity = Qty
+			cart_item.notes = notes
 			cart_item.save()
 	else:
 		pass

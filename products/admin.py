@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Item, ItemImage
+from . models import Item, ItemImage, Variation
 
 # Register your models here.
 
@@ -19,3 +19,4 @@ class ItemAdmin(admin.ModelAdmin):
 
 admin.site.register(Item, ItemAdmin )
 admin.site.register(ItemImage)
+admin.site.register(Variation)
