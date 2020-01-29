@@ -28,8 +28,8 @@ urlpatterns = [
     path('s/', product_views.search, name='search'),
     path('items/', product_views.all, name='items'),
     path('cart/', cart_views.ViewCart, name='cart'),
-    path('cart/<slug:slug>/(?P<Qty>\d+)/$', cart_views.UpdateCart, name='update-cart'),
-    path('items/<slug:slug>', product_views.single, name='single-item'),
+    path('cart/<slug:slug>/', cart_views.UpdateCart, name='update-cart'),
+    path('items/<slug:slug>/', product_views.single, name='single-item'),
 
 
     #(?P<all_items>.*)
