@@ -27,7 +27,7 @@
 	<tr><td>{{ item.item }}{% if item.variations.all %}<ul>{% for subitem in item.variations.all %}<li>{{ subitem.category|capfirst}}:{{ subitem.title|capfirst }}{% endfor %}</li></ul>{% endif %}</td>
 		<td>{{ item.item.price }}</td>
 		<td>{{ item.quantity }}</td>
-		<td><a href="{% url 'update-cart' item.item.slug %}?Qty=0">Remove</a></td></tr>
+		<td><a href="{% url 'remove-from-cart' item.id %}">Remove</a></td></tr>
 	{% endfor %}
  </table>
 

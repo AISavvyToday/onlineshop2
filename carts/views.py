@@ -13,6 +13,13 @@ def ViewCart(request):
 		the_id = None
 	if the_id:
 		cart = Cart.objects.get(id=the_id)
+		new_total = 0.00
+		for i in cart.cartitem_set.all():
+			item_line_total = float(i.item.price) * i.quantity
+			new_total += item_line_total
+		request.session['total_items'] = cart.cartitem_set.count()
+		cart.total = new_total
+		cart.save()
 		context = {"cart": cart} 
 	else:
 		empty_cart_message = 'Your cart is currently empty, please keep shopping'
@@ -21,9 +28,24 @@ def ViewCart(request):
 	return render(request, template, context)
 
 
+def RemoveFromCart(request,id):
+	try:
+		the_id = request.session['cart_id']
+		cart = Cart.objects.get(id=the_id)
+	except:
+		return HttpResponseRedirect(reverse("cart"))
+
+	cartitem = CartItem.objects.get(id=id)
+	cartitem.cart = None
+	cartitem.save()
+	# cartitem.delete()
+	# send success message
+	return HttpResponseRedirect(reverse("cart"))
+
+ 
 
 
-def UpdateCart(request, slug):
+def AddToCart(request, slug):
 	request.session.set_expiry(600)
 	try:
 		the_id = request.session['cart_id']
@@ -52,28 +74,14 @@ def UpdateCart(request, slug):
 				pass
 
 	
-		cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item)
-		if created:
-			print('yeah')
-	
-		if int(Qty) <= 0:
-				cart_item.delete()
-		else:
-			if len(item_var) > 0:
-				cart_item.variations.clear()
-				for i in item_var:
-					cart_item.variations.add(i)
+		cart_item = CartItem.objects.create(cart=cart, item=item)
+		if len(item_var) > 0:
+			cart_item.variations.add(*item_var)
+		cart_item.quantity = Qty
+		cart_item.save()
+		#success message
 
-				cart_item.quantity = Qty
-				cart_item.save()
 
-		new_total = 0.00
-		for i in cart.cartitem_set.all():
-			item_line_total = float(i.item.price) * i.quantity
-			new_total += item_line_total
-		request.session['total_items'] = cart.cartitem_set.count()
-		cart.total = new_total
-		cart.save()
 		return HttpResponseRedirect(reverse("cart"))
-	else:
-		return HttpResponseRedirect(reverse("cart"))
+	# error message
+	return HttpResponseRedirect(reverse("cart"))
