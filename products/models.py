@@ -28,7 +28,7 @@ class Item(models.Model):
 
 
 	def get_absolute_url(self):
-		return reverse('single_item', kwargs={'slug': self.slug })
+		return reverse('single-item', kwargs={'slug': self.slug })
 
 
 

@@ -27,11 +27,15 @@
                   {% for item in item.itemimage_set.all %}
                   <div class='col-sm-4'>  
                       {% if item.featured %}
-                      <img class="img-responsive" src="{{ MEDIA_URL }}{{ item.image.url }}"/>
+                      <div style="width:200px;height:200px;/*background-color: red;*/background-image:url('{{ MEDIA_URL }}{{ item.image.url }}');background-repeat: no-repeat; background-size: cover; background-position: center; margin: 0 auto;">
+                        
+
+                      </div>
+                      <!-- <img class="img-responsive" src="{{ MEDIA_URL }}{{ item.image.url }}"/> -->
                       {% endif %}
                   {% endfor %}
             {% else %}
-            <img class="img-responsive" src="{% static 'img/default.jpg' %}"/>
+            <img class="img-responsive" src="{% static 'img/placeholder.svg' %}"/>
             {% endif %}
                 <div class="caption">
                   <a href="/items/{{ item.slug }}"><h3>{{ item.title }}</h3></a>
