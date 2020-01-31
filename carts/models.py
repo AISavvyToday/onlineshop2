@@ -1,20 +1,8 @@
 from django.db import models
-from products.models import Item
+from products.models import Item, Variation 
 
 # Create your models here.
 
-class CartItem(models.Model):
-	
-	cart = models.ForeignKey('Cart', null=True, blank=True, on_delete=models.CASCADE)
-	item = models.ForeignKey(Item, on_delete=models.CASCADE)
-	quantity = models.IntegerField(default=1)
-	notes = models.TextField(null=True, blank=True)
-	line_total = models.DecimalField(default=0.00,max_digits=1000, decimal_places=2)
-	created = models.DateTimeField(auto_now_add=True, auto_now=False)
-	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
-
-	def __str__(self):
-		return self.item.title
 
 
 class Cart(models.Model):
@@ -28,4 +16,20 @@ class Cart(models.Model):
 
 
 	def __str__(self):
-		return "Card Id: %s" %(self.id)
+		return "Cart Id: %s" %(self.id)
+
+
+
+class CartItem(models.Model):
+	
+	cart = models.ForeignKey(Cart, null=True, blank=True, on_delete=models.CASCADE)
+	variations = models.ManyToManyField(Variation, null=True, blank=True)
+	item = models.ForeignKey(Item, on_delete=models.CASCADE)
+	quantity = models.IntegerField(default=1)
+	notes = models.TextField(null=True, blank=True)
+	line_total = models.DecimalField(default=0.00,max_digits=1000, decimal_places=2)
+	created = models.DateTimeField(auto_now_add=True, auto_now=False)
+	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+
+	def __str__(self):
+		return self.item.title

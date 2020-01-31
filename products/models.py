@@ -60,14 +60,11 @@ class VariationManager(models.Manager):
 	def packages(self):
 		return self.all().filter(category='package')
 
-
-
 VAR_CATEGORIES = (
 	('size','size'),
 	('color', 'color'),
 	('package', 'package'),
 )
-
 
 class Variation(models.Model):
 	item = models.ForeignKey(Item, on_delete=models.CASCADE)
@@ -79,5 +76,7 @@ class Variation(models.Model):
 	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 
 	objects = VariationManager()
+	
+
 	def __str__(self):
 		return self.title

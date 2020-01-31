@@ -35,7 +35,8 @@
             	</h1>
         	</div>
         		<div class="col-sm-4 pull-right">
-	             	<form class="form pull-right" method="GET" action="{% url 'update-cart' item.slug %}">
+	             	<form class="form pull-right" method="POST" action="{% url 'update-cart' item.slug %}">
+	             		{% csrf_token %}
 	             		<input class="btn btn-default btn-block" type="submit" value="Add to Cart"/>
 	             		<input class="form-control" type="number" name="Qty" value="1"/>
 	             
