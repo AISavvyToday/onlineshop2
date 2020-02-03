@@ -3,7 +3,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from carts.models import Cart
 from django.urls import reverse
 from . models import Order
-
+from .utils import id_generator
 # Create your views here.
 
 
@@ -23,7 +23,7 @@ def Checkout(request):
 		return HttpResponseRedirect(reverse('cart'))
 	new_order, created = Order.objects.get_or_create(cart=cart)
 	if created:
-		new_order.order_id = str(time.time())
+		new_order.order_id = id_generator()
 		new_order.save()
 	new_order.user = request.user
 	new_order.save()
