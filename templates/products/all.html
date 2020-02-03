@@ -1,12 +1,51 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head_title  %}
+  Products ||
+
+{% endblock %}
+
+{% block styles %}
+
+ .jumbotron{
+
+ /*color: red;*/
+}
+
+{% endblock %}
+
 
 
 {% block content %}
+<div class="row">
+  
+	
+    {% for item in items %}
+          <div class="thumbnails">
+            {% if item.itemimage_set %}
+                  {% for item in item.itemimage_set.all %}
+                  <div class='col-sm-2'>  
+                      {% if item.featured %}
+                      <div style="width:150px;height:150px;/*background-color: red;*/background-image:url('{{ MEDIA_URL }}{{ item.image.url }}');background-repeat: no-repeat; background-size: cover; background-position: center; margin: 0 auto;">
+                      </div>
+                      <!-- <img class="img-responsive" src="{{ MEDIA_URL }}{{ item.image.url }}"/> -->
+                      {% endif %}
+                  {% endfor %}
+            {% else %}
+            <img class="img-responsive" src="{% static 'img/placeholder.svg' %}"/>
+            {% endif %}
+                <div class="caption">
+                  <a href="/items/{{ item.slug }}"><h3>{{ item.title }}</h3></a>
+                  <p>{{ item.description|truncatechars:500 }}</p>
+                  <p><a href="/items/{{ item.slug }}" class="btn btn-primary" role="button">View</a><a href="#" class="btn btn-default" role="button">Button</a></p>
+                </div>
+          </div>
+      
+  </div>
+    {% cycle "" "" "" "" "" "</div><br/><hr/><div class='row'>" %}
 
-	{% for item in items %}
-
-		<li>{{ item }} {{ item.price }}</li>
-
-	{% endfor %}
-
+    {% endfor %}
+  
+</div>
 {% endblock %}

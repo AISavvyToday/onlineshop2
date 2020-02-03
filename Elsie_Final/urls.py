@@ -21,13 +21,17 @@ from django.contrib import admin
 from django.urls import path
 from products import views as product_views
 from carts import views as cart_views
+from orders import views as order_views
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
     path('', product_views.home, name='home'),
     path('s/', product_views.search, name='search'),
     path('items/', product_views.all, name='items'),
     path('cart/', cart_views.ViewCart, name='cart'),
+    path('checkout/', order_views.Checkout, name='checkout'),
+    path('orders/', order_views.Orders, name='user-orders'),
     path('cart/<id>\d+/$', cart_views.RemoveFromCart, name='remove-from-cart'),
     path('cart/<slug:slug>/', cart_views.AddToCart, name='add-to-cart'),
     path('items/<slug:slug>/', product_views.single, name='single-item'),
