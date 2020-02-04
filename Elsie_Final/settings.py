@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'products',
     'carts',
     'orders',
+    'accounts',
+
     'django.contrib.sites',
 
     'allauth',
@@ -170,3 +172,7 @@ AUTHENTICATION_BACKENDS = (
 
 
 SITE_ID = 1
+
+STRIPE_SECRET_KEY = "sk_test_we78TYt3KAJV5QRZKUIoUrQ200yE03EKyW"
+
+STRIPE_PUBLISHABLE_KEY = "pk_test_chj7VjnDfLXS9Uzmto9avms200Yf8w2AQ3"
