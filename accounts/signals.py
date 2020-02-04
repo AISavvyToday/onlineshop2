@@ -10,7 +10,6 @@ def get_or_create_stripe(sender, user, *args, **Kwargs):
 
 	try:
 		user.userstripe.stripe_id
-		print(user.userstripe.stripe_id)
 	except UserStripe.DoesNotExist:
 		customer = stripe.Customer.create(
 		email = str(user.email)

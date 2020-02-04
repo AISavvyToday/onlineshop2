@@ -22,10 +22,14 @@ from django.urls import path
 from products import views as product_views
 from carts import views as cart_views
 from orders import views as order_views
+from accounts import views as accounts_views
+
 
 urlpatterns = [
 
     path('admin/', admin.site.urls),
+    path('accounts/logout/', accounts_views.LogOutView, name='auth_logout'),
+    path('accounts/login/', accounts_views.LogInView, name='auth_login'),
     path('', product_views.home, name='home'),
     path('s/', product_views.search, name='search'),
     path('items/', product_views.all, name='items'),
