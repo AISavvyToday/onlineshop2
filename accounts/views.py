@@ -13,13 +13,15 @@ def LogOutView(request):
 
 def LogInView(request):
 	form = LogInForm(request.POST or None)
+	btn ='Login'
 	if form.is_valid():
 		username = form.cleaned_data['username']
 		password = form.cleaned_data['password']
 		user = authenticate(username=username, password=password)
 		login(request, user)
 	context = {
-		'form': form
+		'form': form,
+		'submit_btn': btn
 	}
 	return render(request, 'form.html', context)
 
@@ -27,6 +29,7 @@ def LogInView(request):
 
 def RegisterView(request):
 	form = RegistrationForm(request.POST or None)
+	btn ='Join'
 	if form.is_valid():
 		new_user = form.save(commit=False)
 		# new_user.first_name = 'Winnie' # customize model form
@@ -36,6 +39,7 @@ def RegisterView(request):
 		# user = authenticate(username=username, password=password)
 		# login(request, user)
 	context = {
-	'form': form
+	'form': form,
+	'submit_btn': btn
 	}
 	return render(request, 'form.html', context)
