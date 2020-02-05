@@ -19,6 +19,7 @@ def LogInView(request):
 		password = form.cleaned_data['password']
 		user = authenticate(username=username, password=password)
 		login(request, user)
+		user.emailconfirmed.active_user_email()
 	context = {
 		'form': form,
 		'submit_btn': btn

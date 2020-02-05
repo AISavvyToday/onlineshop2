@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DEFAULT_FROM_EMAIL = 'muhuri.json@gmail.com'
+
 
 # Application definition
 
