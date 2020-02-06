@@ -40,6 +40,7 @@ urlpatterns = [
     path('cart/<id>\d+/$', cart_views.RemoveFromCart, name='remove-from-cart'),
     path('cart/<slug:slug>/', cart_views.AddToCart, name='add-to-cart'),
     path('items/<slug:slug>/', product_views.single, name='single-item'),
+    path('accounts/activate/<str:activation_key>', accounts_views.ActivationView, name='activate'),
 
 
     #(?P<all_items>.*)
