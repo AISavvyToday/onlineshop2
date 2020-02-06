@@ -1,4 +1,5 @@
-
+import random
+import hashlib
 import stripe
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -8,33 +9,43 @@ from . models import UserStripe, EmailConfirmed
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
-User = get_user_model
 
-def get_or_create_stripe(sender, user, *args, **Kwargs):
+User = get_user_model()
 
+# incase i want to create stripe_id when a user logs in instead
+
+# def get_or_create_stripe(sender, user, *args, **Kwargs):
+
+# 	try:
+# 		user.userstripe.stripe_id
+# 	except UserStripe.DoesNotExist:
+# 		customer = stripe.Customer.create(
+# 		email = str(user.email)
+# 		)
+# 		new_user_stripe = UserStripe.objects.create(
+# 			user=user,
+# 			stripe_id = customer.id
+# 			)
+# 	except:
+# 		pass
+# user_logged_in.connect(get_or_create_stripe)		
+
+def get_create_stripe(user):
 	try:
 		user.userstripe.stripe_id
 	except UserStripe.DoesNotExist:
 		customer = stripe.Customer.create(
-		email = str(user.email)
-		)
+
+			email = str(user.email)
+
+			)
 		new_user_stripe = UserStripe.objects.create(
 			user=user,
-			stripe_id = customer.id
+			stripe_id=customer.id
+
 			)
 	except:
 		pass
-user_logged_in.connect(get_or_create_stripe)		
-
-def get_create_stripe(user):
-	new_user_stripe = UserStripe.objects.get_or_create(user=user)
-	if created:
-		customer = stripe.Customer.create(
-		email = str(user.email)
-		)
-		new_user_stripe.stripe_id = customer.id
-		new_user_stripe.save()		
-
 
 
 def user_created(sender, instance, created, *args, **Kwargs):
@@ -44,10 +55,12 @@ def user_created(sender, instance, created, *args, **Kwargs):
 		get_create_stripe(user)
 		email_confirmed, email_is_created = EmailConfirmed.objects.get_or_create(user=user)
 		if email_is_created:
-			user.emailconfirmed.email_user()
+			short_hash = hashlib.sha1(str(random.random()).encode()).hexdigest()[:5]
+			base, domain = str(user.email).split('@')
+			activation_key = hashlib.sha1((short_hash+base).encode()).hexdigest()
+			email_confirmed.activation_key = activation_key
+			email_confirmed.save()
+			email_confirmed.activate_user_email()
 			
-
-
-
 
 post_save.connect(user_created, sender=User)

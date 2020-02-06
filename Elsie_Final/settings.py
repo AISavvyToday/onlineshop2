@@ -27,7 +27,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-DEFAULT_FROM_EMAIL = 'muhuri.json@gmail.com'
+DEFAULT_FROM_EMAIL = 'Elsie Collections <jacmuhuri@gmail.com>'
+EMAIL_HOST = 'smtp.gmail.com' #'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'jacmuhuri@gmail.com'
+EMAIL_HOST_PASSWORD = '0755314313'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 
 
 # Application definition
