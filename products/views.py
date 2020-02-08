@@ -28,7 +28,7 @@ def home(request):
 	marketing_message = MarketingMessage.objects.all()[0]
 	context={'items': items,
 			'marketing_message':marketing_message
-	}
+			}
 	return render(request, 'home.html', context)
 
 
