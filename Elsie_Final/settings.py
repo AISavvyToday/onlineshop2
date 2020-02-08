@@ -25,14 +25,26 @@ SECRET_KEY = '^9-+_wmxlovvjkv!nb#)vyn7avv6h1zu0#5a36h^0cz2gb!3iw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
+
+
 ALLOWED_HOSTS = []
 
 DEFAULT_FROM_EMAIL = 'Elsie Collections <jacmuhuri@gmail.com>'
+# try:
+#     from .email_settings import host, user, password
 EMAIL_HOST = 'smtp.gmail.com' #'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'jacmuhuri@gmail.com'
-EMAIL_HOST_PASSWORD = '0755314313'
+EMAIL_HOST_PASSWORD = '0712472060'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+# except:
+#     pass
+
+SITE_URL = 'http://elsiecollections.com'
+if DEBUG:
+    SITE_URL = 'http://127.0.0.1:8000'
+
 
 
 
@@ -137,6 +149,7 @@ USE_L10N = True
 USE_TZ = True
 
 TEMPLATE_CONTEXT_PROCESSORS = [
+
     'django.contrib.auth.context_processors.auth',
     'django.template.context_processors.debug',
     'django.template.context_processors.i18n',
@@ -149,7 +162,6 @@ TEMPLATE_CONTEXT_PROCESSORS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-# STATIC_URL = '/static/'
 STATIC_URL = '/static/'
 
 # STATIC_ROOT = 'C:\\Users\\hp\\OneDrive\\Desktop\\DevProjects\\Elsie_Final\\static\\static_root\\'
@@ -168,11 +180,9 @@ TEMPLATES_DIRS = (os.path.join(BASE_DIR, 'templates'),
 
     )
 
-
-
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
-    # 'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
 
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',

@@ -15,10 +15,33 @@
     <title>Elsie Collections</title>
 
 
-    {% load staticfiles %}
+    {% load static %}
 
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}"/>
+
+    <style>
+
+      .alert-top-message {
+        margin-bottom: 0px;
+        border-radius: 0px;
+        text-align: center;
+        background-color: #DBDBDB;
+      }
+      .alert-top-message h3{
+        margin: 0 auto;
+      }
+      .background_img_thumb {
+        width:100px;
+        height:100px;
+        background-image:url("{% static 'img/placeholder.svg' %}");
+        background-size:cover;
+        background-repeat:no-repeat;
+        background-position: center;
+
+      }
+
+    </style>
 
 
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -39,15 +62,31 @@
 </head>
 
 <body>
+  <div class="alert alert-top-message alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    <div class="container">
+
+      <h1>Hello there!</h1>
+    </div>
+  </div>
 
 
 
 {% include 'navbar.html' %}
 
-<div class="container">
+
   {% block jumbotron %}
   {% endblock %}
-</div>
+  <div class="container">
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      <p>Hello there!</p>
+    </div>
+  </div>
 
 <div class="container">
     
