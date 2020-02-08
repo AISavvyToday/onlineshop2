@@ -27,6 +27,7 @@
         border-radius: 0px;
         text-align: center;
         background-color: #DBDBDB;
+        display: none;
       }
       .alert-top-message h3{
         margin: 0 auto;
@@ -80,16 +81,17 @@
   {% block jumbotron %}
   {% endblock %}
   <div class="container">
-    <div class="alert alert-success alert-dismissible" role="alert">
+    {% if messages %}
+      {% for message in messages %}
+    <div class='alert {% if "success" in message.tags %}alert-success{% elif "warning" in message.tags %}alert-warning {% elif "error" in message.tags %}alert-danger {% endif %} alert-dismissible' role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      <p>Hello there!</p>
+          {% if "safe" in message.tags %}{{ message|safe }}{% else %}{{ message }}{% endif %}  
     </div>
-  </div>
-
-<div class="container">
-    
+      {% endfor %}
+    {% endif %}
+      
   {% block content %}
 
   {% endblock content %}
