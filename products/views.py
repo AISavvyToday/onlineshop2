@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from . models import Item, ItemImage
 from django.http import Http404
+from marketing.models import MarketingMessage
 # Create your views here.
 
 
@@ -24,7 +25,10 @@ def search(request):
 
 def home(request):
 	items = Item.objects.all()
-	context={'items': items }
+	marketing_message = MarketingMessage.objects.all()[0]
+	context={'items': items,
+			'marketing_message':marketing_message
+	}
 	return render(request, 'home.html', context)
 
 
