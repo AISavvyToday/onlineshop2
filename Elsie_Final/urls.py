@@ -38,11 +38,13 @@ urlpatterns = [
     path('cart/', cart_views.ViewCart, name='cart'),
     path('checkout/', order_views.Checkout, name='checkout'),
     path('orders/', order_views.Orders, name='user-orders'),
-    path('ajax/dismiss_marketing_message/', marketing_views.DismissMarketingMessage, name='dismiss-marketing-message'),
+    
     path('cart/<id>\d+/$', cart_views.RemoveFromCart, name='remove-from-cart'),
     path('cart/<slug:slug>/', cart_views.AddToCart, name='add-to-cart'),
     path('items/<slug:slug>/', product_views.single, name='single-item'),
     path('accounts/activate/<str:activation_key>', accounts_views.ActivationView, name='activate'),
+    path('ajax/dismiss_marketing_message/', marketing_views.DismissMarketingMessage, name='dismiss-marketing-message'),
+    path('ajax/email_signup/', marketing_views.EmailSignUp, name='ajax_email_signup'),
 
 
     #(?P<all_items>.*)

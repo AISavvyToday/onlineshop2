@@ -42,6 +42,11 @@
       .alert-top-message h3{
         margin: 0 auto;
       }
+
+      .modal-dialog {
+        margin-top: 30%;
+      }
+
       .background_img_thumb {
         width:100px;
         height:100px;
@@ -93,7 +98,7 @@
 
   {% endblock content %}
 </div>
-
+{% include 'modal.html' %}
 
 
     <!-- Bootstrap core JavaScript
@@ -125,6 +130,34 @@
               }
             });
         });
+
+        {% if not request.user.is_authenticated and not request.session.email_added_marketing %}
+        function showModal(){
+          $('#marketingModal').modal('show');
+          // setTimeout(showModal, 5000);
+        }
+        // showModal()
+        setTimeout(showModal, 5000);
+            $('#sendMarketingForm').click(function(e){
+              e.preventDefault()
+              var mForm = $('#sendForm').serialize()
+            $.ajax({
+              type: 'POST',
+              url: '{% url "ajax_email_signup" %}',
+              data: mForm,
+              success: function(data){
+                $('#modalMessage').html('<p>' + data + '</p>')
+                $('#marketingModal').modal('hide');
+              },
+              error: function(data){
+                var obj = data.responseJSON
+                $('#modalMessage').html('<p style="color:red;">' + obj.email + '</p>')
+
+
+              },
+            });
+        });
+        {% endif %}
     });
 
   </script>
