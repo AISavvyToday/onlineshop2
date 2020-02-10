@@ -64,7 +64,7 @@
 <body>
   {% if marketing_message %}
   <div class="alert alert-top-message alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <button id="marketing_message-btn" type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
     <div class="container">
@@ -109,6 +109,28 @@
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+
+  <script>
+        $(document).ready(function(){
+        $('#marketing_message-btn').click(function(){
+            $.ajax({
+              type: 'POST',
+              url: '{% url "dismiss-marketing-message" %}',
+              data: {
+                'dismiss-marketing': true,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+              },
+              success: function(data){
+                
+              },
+              error: function(){
+                alert('Error! something went wrong, please try again later')
+              }
+            });
+        });
+    });
+
+  </script>
 
   <script>
     $(document).ready(function(){

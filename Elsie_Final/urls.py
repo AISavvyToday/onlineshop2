@@ -23,6 +23,7 @@ from products import views as product_views
 from carts import views as cart_views
 from orders import views as order_views
 from accounts import views as accounts_views
+from marketing import views as marketing_views
 
 
 urlpatterns = [
@@ -37,6 +38,7 @@ urlpatterns = [
     path('cart/', cart_views.ViewCart, name='cart'),
     path('checkout/', order_views.Checkout, name='checkout'),
     path('orders/', order_views.Orders, name='user-orders'),
+    path('ajax/dismiss_marketing_message/', marketing_views.DismissMarketingMessage, name='dismiss-marketing-message'),
     path('cart/<id>\d+/$', cart_views.RemoveFromCart, name='remove-from-cart'),
     path('cart/<slug:slug>/', cart_views.AddToCart, name='add-to-cart'),
     path('items/<slug:slug>/', product_views.single, name='single-item'),
