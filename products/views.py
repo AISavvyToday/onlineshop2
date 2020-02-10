@@ -24,7 +24,7 @@ def search(request):
 
 
 def home(request):
-	sliders = Slider.objects.all()
+	sliders = Slider.objects.all_featured()
 	items = Item.objects.all()
 	marketing_message = MarketingMessage.objects.all()[0]
 	context={'items': items,
