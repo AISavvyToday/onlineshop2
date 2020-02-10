@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from . models import Item, ItemImage
 from django.http import Http404
-from marketing.models import MarketingMessage
+from marketing.models import MarketingMessage, Slider
 # Create your views here.
 
 
@@ -24,10 +24,12 @@ def search(request):
 
 
 def home(request):
+	sliders = Slider.objects.all()
 	items = Item.objects.all()
 	marketing_message = MarketingMessage.objects.all()[0]
 	context={'items': items,
-			'marketing_message':marketing_message
+			'marketing_message':marketing_message,
+			'sliders': sliders
 			}
 	return render(request, 'home.html', context)
 
