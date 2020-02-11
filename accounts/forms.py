@@ -6,6 +6,7 @@ from .models import UserAddress
 User = get_user_model()
 
 class UserAddressForm(forms.ModelForm):
+	default = forms.BooleanField(label='Make default')
 	class Meta:
 		model = UserAddress
 		fields = [
@@ -16,7 +17,6 @@ class UserAddressForm(forms.ModelForm):
 		'county',
 		'town',
 		'phone',
-		'billing',
 	]
 
 

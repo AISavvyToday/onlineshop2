@@ -8,6 +8,19 @@ from django.template.loader import render_to_string
 
 
 # Create your models here.
+class USerDefaultAddress(models.Model):
+	user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+	shipping = models.ForeignKey('UserAddress', blank=True, null=True,\
+					related_name='user_address_shipping_default', on_delete=models.CASCADE)
+	billing = models.ForeignKey('UserAddress', blank=True, null=True,\
+					related_name='user_address_billing_default', on_delete=models.CASCADE)
+
+	def __str__(self):
+		return str(self.user.username)
+
+
+
+
 
 class UserAddressManager(models.Manager):
 	def get_billing_addresses(self, user):
@@ -35,6 +48,9 @@ class UserAddress(models.Model):
 		return '%s, %s, %s, %s, %s' %(self.address, self.country, self.zip_code, self.county, self.town)
 
 	objects = UserAddressManager()
+
+	class Meta:
+		ordering = ['updated','-created']
 
 
 
