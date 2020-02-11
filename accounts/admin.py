@@ -1,9 +1,18 @@
 from django.contrib import admin
-from . models import UserStripe, EmailConfirmed, EmailMarketingSignUp
+from . models import UserStripe, EmailConfirmed, EmailMarketingSignUp, UserAddress
 
 # Register your models here.
+
+class UserAddressAdmin(admin.ModelAdmin):
+
+	class Meta:
+		model = UserAddress
+
+
+
 admin.site.register(UserStripe)
 admin.site.register(EmailConfirmed)
+admin.site.register(UserAddress, UserAddressAdmin)
 
 class EmailMarketingSignUpAdmin(admin.ModelAdmin):
 	list_display = ['__str__', 'created']

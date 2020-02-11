@@ -6,7 +6,26 @@ from django.db import models
 from django.template.loader import render_to_string
 
 
+
 # Create your models here.
+
+class UserAddress(models.Model):
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+	address = models.CharField(max_length=200)
+	address2 = models.CharField(max_length=200, null=True, blank=True)
+	country = models.CharField(max_length=120)
+	zip_code = models.CharField(max_length=25)
+	county = models.CharField(max_length=120, null=True, blank=True)
+	town = models.CharField(max_length=120)
+	phone = models.CharField(max_length=120)
+	shipping = models.BooleanField(default=True)
+	billing = models.BooleanField(default=False)
+	created = models.DateTimeField(auto_now_add=True, auto_now=False)
+	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+
+	def __str__(self):
+		return str(self.user.username)
+
 
 
 class UserStripe(models.Model):

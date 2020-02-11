@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'orders',
     'accounts',
     'marketing',
+    'localflavor',
 
     'django.contrib.sites',
 
