@@ -3,7 +3,7 @@ from django.shortcuts import render, HttpResponseRedirect, Http404
 from django.contrib.auth import logout, login, authenticate
 from django.urls import reverse
 from django.contrib import messages
-from . forms import LogInForm, RegistrationForm
+from . forms import LogInForm, RegistrationForm, UserAddressForm
 from . models import EmailConfirmed
 
 # Create your views here.
@@ -79,6 +79,24 @@ def ActivationView(request, activation_key):
 
 		context = {'page_message':page_message}
 		return render(request, 'activation-complete.html', context)
+	else:
+		raise Http404
+
+
+def AddUserAddress(request):
+	print(request.GET)
+	try:
+		next_page = request.GET.get('next')
+	except:
+		next_page = None
+	if request.method == 'POST':
+		form = UserAddressForm(request.POST)
+		if form.is_valid():
+			new_address = form.save(commit=False)
+			new_address.user = request.user
+			new_address.save()
+			if next_page is not None:
+				return HttpResponseRedirect(reverse(str(next_page))+'?address_added=True')
 	else:
 		raise Http404
 

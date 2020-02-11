@@ -34,19 +34,28 @@ def Checkout(request):
 		new_order.save()
 	except:
 		return HttpResponseRedirect(reverse('cart'))
+	try:
+		address_added = request.GET.get('address_added')
+	except:
+		address_added = None
+	if address_added is None:
+		address_form = UserAddressForm()
+	else:
+		address_form = None
 
-	address_form = UserAddressForm(request.POST or None)
-	if address_form.is_valid():
-		new_address = address_form.save(commit=False)
-		new_address.user = request.user
-		new_address.save()
+	current_addresses = UserAddress.objects.filter(user=request.user)
+	billing_addresses = UserAddress.objects.get_billing_addresses(user=request.user)
 
 	if new_order.status == 'Finished':
 		# cart.delete()
 		del request.session['cart_id']
 		del request.session['total_items']
 		return HttpResponseRedirect(reverse('cart'))
-	context = {'address_form':address_form}
+	context = {'address_form':address_form,
+				'current_addresses':current_addresses,
+				'billing_addresses': billing_addresses,
+
+	}
 	return render(request, 'checkout.html', context)
 
 

@@ -45,6 +45,7 @@ urlpatterns = [
     path('accounts/activate/<str:activation_key>', accounts_views.ActivationView, name='activate'),
     path('ajax/dismiss_marketing_message/', marketing_views.DismissMarketingMessage, name='dismiss-marketing-message'),
     path('ajax/email_signup/', marketing_views.EmailSignUp, name='ajax_email_signup'),
+    path('ajax/add-user-address/', accounts_views.AddUserAddress, name='ajax-add-user-address'),
 
 
     #(?P<all_items>.*)

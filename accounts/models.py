@@ -9,6 +9,11 @@ from django.template.loader import render_to_string
 
 # Create your models here.
 
+class UserAddressManager(models.Manager):
+	def get_billing_addresses(self, user):
+		return super(UserAddressManager, self).filter(billing=True).filter(user=user)
+
+
 class UserAddress(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	address = models.CharField(max_length=200)
@@ -25,6 +30,11 @@ class UserAddress(models.Model):
 
 	def __str__(self):
 		return str(self.user.username)
+
+	def get_address(self):
+		return '%s, %s, %s, %s, %s' %(self.address, self.country, self.zip_code, self.county, self.town)
+
+	objects = UserAddressManager()
 
 
 
