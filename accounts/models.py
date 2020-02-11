@@ -38,5 +38,15 @@ class EmailConfirmed(models.Model):
 		send_mail(subject, message, from_email, [self.user.email], kwargs)
 
 
+class EmailMarketingSignUp(models.Model):
+	email = models.EmailField()
+	created = models.DateTimeField(auto_now_add=True, auto_now=False)
+	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
+	# confirmed = models.BooleanField(default=False)
+
+	def __str__(self):
+		return str(self.email)
+
+
 
 
