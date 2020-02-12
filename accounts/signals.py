@@ -2,7 +2,7 @@ import random
 import hashlib
 import stripe
 from django.conf import settings
-from django.contrib.auth import get_user_model
+
 from django.contrib.auth.signals import user_logged_in
 from django.db.models.signals import post_save
 from . models import UserStripe, EmailConfirmed
@@ -10,7 +10,6 @@ from . models import UserStripe, EmailConfirmed
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-User = get_user_model()
 
 # incase i want to create stripe_id when a user logs in instead
 
@@ -63,4 +62,4 @@ def user_created(sender, instance, created, *args, **Kwargs):
 			email_confirmed.activate_user_email()
 			
 
-post_save.connect(user_created, sender=User)
+post_save.connect(user_created, sender=settings.AUTH_USER_MODEL)

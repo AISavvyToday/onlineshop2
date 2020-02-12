@@ -69,23 +69,43 @@ def Checkout(request):
 		try:
 			user_stripe = request.user.userstripe.stripe_id
 			customer = stripe.Customer.retrieve(user_stripe)
-			print(customer)
 		except:
 			customer = None
 		if customer is not None:
-			card = stripe.Customer.create_source(user_stripe,source="tok_mastercard")
-			charge = stripe.Charge.create(amount=int( final_amount * 100),currency="usd",card=card,\
-				customer=customer)
+			if 'Billing_address' in request.POST:
+				billing_address = request.POST['Billing_address']
+				shipping_address = request.POST['Shipping_address']
 
-			print(card)
-			print(charge)
-			if charge['captured']:
-				new_order.status = 'Finished'
-				new_order.save()
-				del request.session['cart_id']
-				del request.session['total_items']
-				messages.success(request,'Your order has been successfully completed, thank you for shopping with us')
-				return HttpResponseRedirect(reverse('user-orders'))
+				try:
+					billing_address_instance = UserAddress.objects.get(id=billing_address)
+				except:
+					billing_address_instance = None
+				try:
+					shipping_address_instance = UserAddress.objects.get(id=shipping_address)
+				except:
+					shipping_address_instance = None
+
+
+				card = stripe.Customer.create_source(user_stripe,source="tok_mastercard")
+				card.address_country = billing_address_instance.country or None
+				card.address_city = billing_address_instance.town or None
+				card.address_state = billing_address_instance.county or None
+				card.address_line1 = billing_address_instance.address or None	
+				card.save()
+
+				charge = stripe.Charge.create(amount=int( final_amount * 100),currency="usd",card=card,\
+					customer=customer)
+
+				if charge['captured']:
+					new_order.status = 'Finished'
+					new_order.shipping_address = shipping_address_instance
+					new_order.billing_address = billing_address_instance
+					new_order.save()
+					del request.session['cart_id']
+					del request.session['total_items']
+			messages.success(request,'Your order has been successfully completed,\
+				thank you for shopping with us')
+			return HttpResponseRedirect(reverse('user-orders'))
 
 
 	context = { 'order': new_order,

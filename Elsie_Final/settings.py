@@ -111,7 +111,7 @@ WSGI_APPLICATION = 'Elsie_Final.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Esther',
+        'NAME': 'ElsieCollections',
         'USER': 'postgres',
         'PASSWORD': '0712472060',
         'HOST': '127.0.0.1',
@@ -153,6 +153,7 @@ USE_TZ = True
 
 MARKETING_HOURS_OFFSET = 3
 MARKETING_SECONDS_OFFSET = 0
+DEFAULT_TAX_RATE = 0.16
 
 TEMPLATE_CONTEXT_PROCESSORS = [
 

@@ -20,10 +20,6 @@ class UserAddressForm(forms.ModelForm):
 	]
 
 
-
-
-
-
 class LogInForm(forms.Form):
 	username = forms.CharField()
 	password = forms.CharField(widget=forms.PasswordInput())
