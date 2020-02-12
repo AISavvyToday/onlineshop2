@@ -80,8 +80,6 @@ def Checkout(request):
 
 			if charge['captured']:
 				new_order.status = 'Finished'
-				new_order.shipping_address = shipping_address_instance
-				new_order.billing_address = billing_address_instance
 				new_order.save()
 				del request.session['cart_id']
 				del request.session['total_items']

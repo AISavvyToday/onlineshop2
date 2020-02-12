@@ -1,15 +1,16 @@
 from django.urls import reverse
 from django.db import models
+from django.db.models.signals import post_save  
 
 # Create your models here.
 
 class Category(models.Model):
-	title = models.CharField(max_length=100)
+	title = models.CharField(max_length=120)
 	description = models.TextField(null=True, blank=True)
 	slug = models.SlugField(unique=True)
 	created = models.DateTimeField(auto_now_add=True, auto_now=False)
 	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
-	featured = models.BooleanField(default=True)
+	featured = models.BooleanField(default=None)
 	active = models.BooleanField(default=True)
 
 
@@ -17,7 +18,7 @@ class Category(models.Model):
 		return self.title
 
 
-
+	
 class Item(models.Model):
 	title = models.CharField(max_length=100)
 	description = models.TextField(null=True, blank=True)
@@ -28,6 +29,7 @@ class Item(models.Model):
 	created = models.DateTimeField(auto_now_add=True, auto_now=False)
 	updated = models.DateTimeField(auto_now_add=False, auto_now=True)
 	active = models.BooleanField(default=True)
+	update_defaults = models.BooleanField(default=False)
 
 
 	def __str__(self):
@@ -94,3 +96,26 @@ class Variation(models.Model):
 
 	def __str__(self):
 		return self.title
+
+
+
+# T-shirt 5
+# Active Wear 6
+
+def item_defaults(sender, instance, created, *args, **kwargs):
+	if instance.update_defaults:
+		categories = instance.category.all()
+		print(categories)
+		for cat in categories: 
+			print(cat.id)
+			if cat.id == 5:#id for tshirt #----> create function for handling all category ids
+				small_size = Variation.objects.get_or_create(item=instance,category='size',title='Small')
+				medium_size = Variation.objects.get_or_create(item=instance,category='size',title='Medium')
+				large_size = Variation.objects.get_or_create(item=instance,category='size',title='Large')
+
+
+		instance.update_defaults = False
+		instance.save()
+
+
+post_save.connect(item_defaults, sender=Item)
