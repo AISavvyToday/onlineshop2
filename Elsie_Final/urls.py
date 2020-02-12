@@ -32,6 +32,7 @@ urlpatterns = [
     path('accounts/logout/', accounts_views.LogOutView, name='auth_logout'),
     path('accounts/login/', accounts_views.LogInView, name='auth_login'),
     path('accounts/register/', accounts_views.RegisterView, name='auth_register'),
+    path('accounts/address/add/', accounts_views.AddUserAddress, name='add-user-address'),
     path('', product_views.home, name='home'),
     path('s/', product_views.search, name='search'),
     path('items/', product_views.all, name='items'),

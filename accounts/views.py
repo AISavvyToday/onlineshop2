@@ -89,8 +89,8 @@ def AddUserAddress(request):
 		next_page = request.GET.get('next')
 	except:
 		next_page = None
+	form = UserAddressForm(request.POST or None)
 	if request.method == 'POST':
-		form = UserAddressForm(request.POST)
 		if form.is_valid():
 			new_address = form.save(commit=False)
 			new_address.user = request.user
@@ -103,9 +103,13 @@ def AddUserAddress(request):
 
 
 			if next_page is not None:
-				return HttpResponseRedirect(reverse(str(next_page))+'?address_added=True')
-	else:
-		raise Http404
+				return HttpResponseRedirect(reverse(str(next_page)))
+	submit_btn = 'Save Address'
+	form_title = 'Add new address'
+	return render(request, 'form.html',\
+					context={'form': form,\
+					'submit_btn': submit_btn,\
+					'form_title': form_title})
 
 
 
