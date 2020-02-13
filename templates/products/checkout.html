@@ -3,6 +3,16 @@
 <script>
 {% block jquery %}
 
+	$(".shipping-label").click(function(){
+		$('label').removeClass('shipping-label-selected');
+		$(this).addClass('shipping-label-selected');
+	});
+
+	$(".billing-label").click(function(){
+		$('label').removeClass('billing-label-selected');
+		$(this).addClass('billing-label-selected');
+	});
+
  	Stripe.setPublishableKey('{{ stripe_pub }}');
 
  	jQuery(function($){
@@ -44,6 +54,59 @@ $('#addShippingAddress').click(function(e){
 
 {% block styles%}
 
+.shipping-label{
+	font-size: 16px;
+	font-weight: normal;
+	padding: 4px 25px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+}
+.shipping-label input[type=radio]{
+	display: none;
+}
+
+.shipping-label:hover {
+	font-size: 16px;
+	font-weight: normal;
+	background-color: #428bca;
+	color: white;
+	cursor: pointer;
+
+}
+.shipping-label-selected {
+	font-size: 16px;
+	font-weight: normal;
+	background-color: #428bca;
+	color: white;
+	cursor: pointer;
+}
+.billing-label{
+	font-size: 16px;
+	font-weight: normal;
+	padding: 4px 25px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+}
+.billing-label input[type=radio]{
+	display: none;
+}
+
+.billing-label:hover {
+	font-size: 16px;
+	font-weight: normal;
+	background-color: #428bca;
+	color: white;
+	cursor: pointer;
+
+}
+.billing-label-selected {
+	font-size: 16px;
+	font-weight: normal;
+	background-color: #428bca;
+	color: white;
+	cursor: pointer;
+}
+
 @media(min-width: 1200px){
 	.total{ position: fixed;
 	 }
@@ -54,12 +117,15 @@ $('#addShippingAddress').click(function(e){
 
 {% block content %}
 
-<div class="col-sm-3 pull-right">
+<div class="col-sm-7 pull-right">
 	<div class="total">
-	<h1>Current total (VAT inc): {{ order.get_final_amount }}</h1>
-	<a href="#">Finalize checkout</a>
+	<h3>Current total (VAT inc): {{ order.get_final_amount }}</h3>
+<!-- 	<a href="#">Finalize checkout</a> -->
 </div>
 </div>
+
+<div class="col-sm-9 pull-left">
+
 
 <div class="col-sm-6 pull-right" id="shippingAddressForm" style="display:none;"> 
 	<h3>Add new Shipping Address</h3>
@@ -75,49 +141,52 @@ $('#addShippingAddress').click(function(e){
 <form method="POST" action="" id="payment-form">{% csrf_token %}
 {% if current_addresses %}
 	
-<div class="col-sm-6">
-<h3>Shipping Addresses</h3>
+<div class="col-sm-12">
+		<h3>Shipping Addresses</h3>
+			{% for address in current_addresses %}
+				
+				{% if request.user.userdefaultaddress.shipping.id == address.id %}
+					<label class="shipping-label shipping-label-selected">
+						<input type="radio" name="Shipping_address", value="{{ address.id }}" checked="checked" /> {{ address.get_address }} <br/> 
 
-		{% for address in current_addresses %}
-
-		{% if request.user.userdefaultaddress.shipping.id == address.id %}
-		<input type="radio" name="Shipping_address", value="{{ address.id }}" checked="checked" /> {{ address.get_address }} <br/> 
-
-		{% else %}
-		<input type="radio" name="Shipping_address", value="{{ address.id }}"/> {{ address.get_address }} <br/>
-				 
-		{% endif %}	 	
-
-		{% endfor %}
-
+						{% else %}
+						<label class="shipping-label">
+						<input type="radio" name="Shipping_address", value="{{ address.id }}"/> {{ address.get_address }}
+				{% endif %}
+					</label> <br/>
+						 
+			{% endfor %}
+					</br>
 <a href="{% url 'add-user-address' %}" id="addShippingAddress"> Add new address</a>
 		
-		</div>
+</div>
 {% endif %}
 
-<div class="row">
-{% if billing_addresses %}
-	<h3>Billing Addresses</h3>
-	<div class="col-sm-6">
+	  {% if billing_addresses %}
+	  <div class="col-sm-12">
+		<h3>Billing Addresses</h3>
+			
 
 		{% for address in billing_addresses %}
 		 
-{% if request.user.userdefaultaddress.billing.id == address.id %}
-<input type="radio" name="Billing_address", value="{{ address.id }}" checked="checked" /> {{ address.get_address }} <br/> 
+				{% if request.user.userdefaultaddress.billing.id == address.id %}
+				<label class="billing-label billing-label-selected">
+					<input type="radio" name="Billing_address", value="{{ address.id }}" checked="checked" /> {{ address.get_address }}  
 
-{% else %}
-<input type="radio" name="Billing_address", value="{{ address.id }}"/> {{ address.get_address }} <br/>
-		 
-{% endif %}	
+					{% else %}
+					<label class="billing-label"><br/>
+					<input type="radio" name="Billing_address", value="{{ address.id }}"/> {{ address.get_address }} <br/>
+						 
+				{% endif %}
+			</label>	
 
 		{% endfor %}
+			
 	</div>
-{% endif %}
-</div>
+	{% endif %}
 
-<div class="row">
-	<div class="col-sm-6">
-		<h3>Credit card Info</h3>
+<div class="col-sm-6">
+	<h3>Credit card Info</h3>
 
 <div id="card_errors_div" class="alert alert-danger hidden payment-errors" role="alert">
 </div>
@@ -138,11 +207,11 @@ $('#addShippingAddress').click(function(e){
 		<div class="form-row">
 			<b>Expiration (MM/YYYY)</b>
 		<div class="row">
-			<div class="col-xs-2" style="padding-right: 0px;">		
-			<input class="form-control" type="text" size="1" data-stripe="exp-month" placeholder="e.g 02"/>
+			<div class="col-xs-4" style="padding-right: 0px;">		
+			<input class="form-control" type="text" size="2" data-stripe="exp-month" placeholder="e.g 02"/>
 		</div>
-		<div class="col-xs-3">
-		<input class="form-control" type="text" size="2" data-stripe="exp-year" placeholder="e.g 2020"/>
+		<div class="col-xs-6">
+		<input class="form-control" type="text" size="4" data-stripe="exp-year" placeholder="e.g 2020"/>
 		</div>
 	</div>
 	</div>
@@ -152,6 +221,6 @@ $('#addShippingAddress').click(function(e){
 	<button class="btn btn-default btn-lg" type="Submit">Submit Payment</button>
 	
 </div>
-</div>
 </form>
+</div>
 {% endblock %}
