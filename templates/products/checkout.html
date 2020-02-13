@@ -17,9 +17,11 @@
  	function stripeResponseHandler(status, response) {
  		var $form = $('#payment-form');
  		if (response.error){
+ 			$('#card_errors_div').removeClass('hidden');
  			$form.find('.payment-errors').text(response.error.message);
  			$form.find('button').prop('disabled', false);
  		} else {
+ 			$('#card_errors_div').addClass('hidden');
  			var token = response.id; 
  			$form.append($('<input type"hidden" name"stripeToken"/>'));
  			$form.get(0).submit();
@@ -38,10 +40,26 @@ $('#addShippingAddress').click(function(e){
 
 {% endblock %}
 </script>
+<style>
+
+{% block styles%}
+
+@media(min-width: 1200px){
+	.total{ position: fixed;
+	 }
+}
+
+{% endblock %}
+</style>
 
 {% block content %}
 
-
+<div class="col-sm-3 pull-right">
+	<div class="total">
+	<h1>Current total (VAT inc): {{ order.get_final_amount }}</h1>
+	<a href="#">Finalize checkout</a>
+</div>
+</div>
 
 <div class="col-sm-6 pull-right" id="shippingAddressForm" style="display:none;"> 
 	<h3>Add new Shipping Address</h3>
@@ -52,7 +70,7 @@ $('#addShippingAddress').click(function(e){
 </div>
 
 
-<h1>Current total (VAT inc): {{ order.get_final_amount }}</h1>
+
 
 <form method="POST" action="" id="payment-form">{% csrf_token %}
 {% if current_addresses %}
@@ -98,32 +116,42 @@ $('#addShippingAddress').click(function(e){
 </div>
 
 <div class="row">
-	<h3>Credi card details</h3>
+	<div class="col-sm-6">
+		<h3>Credit card Info</h3>
 
-	<span class="payment-errors"></span>
+<div id="card_errors_div" class="alert alert-danger hidden payment-errors" role="alert">
+</div>
+	<div class="form-row">
+		<div class="row">
+		<div class="col-xs-6" style="padding-right: 0px;">
+			<b>Card number</b>
+			<input class="form-control" type="text" size="20" data-stripe="number"/>
+		</div>
+			<div class="col-xs-3">
+				<b>CVC</b>
+					<input class="form-control" type="text" size="4" data-stripe="cvc"/>
+			</div>
+		</div>
+	</div>
+</br>
 
-	<div class="form-row">
-		<label>
-			<span>Card number</span>
-			<input type="text" size="20" data-stripe="number"/>
-		</label>
-	</div>
-	<div class="form-row">
-		<label>
-			<span>CVC</span>
-			<input type="text" size="4" data-stripe="cvc"/>
-		</label>
-	</div>
 		<div class="form-row">
-		<label>
-			<span>Expiration (MM/YYYY)</span>
-			<input type="text" size="2" data-stripe="exp-month"/>
-		</label>
-		<span> / </span>
-		<input type="text" size="4" data-stripe="exp-year"/>
+			<b>Expiration (MM/YYYY)</b>
+		<div class="row">
+			<div class="col-xs-2" style="padding-right: 0px;">		
+			<input class="form-control" type="text" size="1" data-stripe="exp-month" placeholder="e.g 02"/>
+		</div>
+		<div class="col-xs-3">
+		<input class="form-control" type="text" size="2" data-stripe="exp-year" placeholder="e.g 2020"/>
+		</div>
 	</div>
-	<button type="Submit">Submit Payment</button>
+	</div>
+
+	</br>
+
+	<button class="btn btn-default btn-lg" type="Submit">Submit Payment</button>
 	
+</div>
 </div>
 </form>
 {% endblock %}
